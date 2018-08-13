@@ -1,0 +1,33 @@
+<VirtualHost *:8080>
+        ServerName localhost
+        ServerAdmin webmaster@localhost
+        WSGIDaemonProcess interface user="cody" group="cody" home="/home/cody/workspace/api/" threads=5
+        WSGIProcessGroup interface
+        WSGIScriptAlias / /home/cody/workspace/api/interface.wsgi
+        DocumentRoot /home/cody/workspace/api/
+        <Directory "/home/cody/workspace/api/">
+                Order deny,allow
+                Allow from all
+                Require all granted
+        </Directory>
+</VirtualHost>
+
+
+
+import sys
+sys.path.insert(0, '/home/cody/workspace/api/')
+from myApp import app as application
+
+
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/hi')
+def sayhi():
+    with open('/home/cody/workspace/api/api_running_log.log', 'w') as fp:
+        fp.write('api running...')
+    return "<h1>Ni Hao.</h1>"
+
+if __name__ == '__main__':
+    app.run()
